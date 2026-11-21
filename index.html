@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Poder de la Esposa que Ora - Landing Page Interactiva</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN para un diseño robusto y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#A62E1B',
+                        'primary-dark': '#822213',
+                        'accent-start': '#A62E1B',
+                        'accent-end': '#CCABA5',
+                        'bg-light': '#FDFBFB',
+                        'card-bg': '#FFFFFF',
+                        'text-main': '#2D2726',
+                        'text-muted': '#6B615F',
+                        'border-custom': '#E8E0DF'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .view-transition {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-[#FDFBFB] text-[#2D2726] font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-[#A62E1B] selection:text-white">
+
+    <!-- VISTA 1: PORTADA Y DASHBOARD DE CAPÍTULOS -->
+    <div id="home-view" class="view-transition opacity-100 transform translate-y-0">
+        <!-- Hero Section -->
+        <header class="relative bg-gradient-to-br from-[#A62E1B] to-[#CCABA5] text-white py-20 px-6 text-center shadow-lg overflow-hidden">
+            <div class="absolute inset-0 bg-black/10 pointer-events-none"></div>
+            <div class="max-w-4xl mx-auto relative z-10">
+                <span class="inline-block bg-white/20 backdrop-blur-md text-white text-xs font-semibold px-4 py-1.5 rounded-full mb-4 tracking-wide uppercase">
+                    Libro de Oraciones • Stormie Omartian
+                </span>
+                <h1 class="font-serif text-4xl sm:text-6xl font-bold mb-6 tracking-tight leading-tight">
+                    El Poder de la Esposa que Ora
+                </h1>
+                <p class="text-lg sm:text-xl font-light opacity-95 max-w-2xl mx-auto mb-6">
+                    Transforma tu matrimonio a través de la intercesión sincera y descansa en el poder transformador de Dios.
+                </p>
+                <p class="text-sm sm:text-base opacity-9 max-w-xl mx-auto mb-10 leading-relaxed font-light">
+                    Una guía práctica y espiritual para sanar, proteger y revitalizar tu relación matrimonial, una oración a la vez.
+                </p>
+                <button onclick="scrollToChapters()" class="bg-white text-[#A62E1B] font-semibold px-8 py-3.5 rounded-full shadow-lg hover:bg-[#2D2726] hover:text-white transition-all transform hover:-translate-y-1 inline-flex items-center gap-3 group text-base">
+                    Explorar capítulos
+                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Dashboard / Controles y Grid de Capítulos -->
+        <main id="chapters-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="bg-white rounded-2xl border border-[#E8E0DF] shadow-sm p-6 mb-10 flex flex-col md:flex-row gap-4 justify-between items-center">
+                <!-- Barra de Búsqueda -->
+                <div class="relative w-full md:w-96">
+                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6B615F]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    <input type="text" id="searchInput" oninput="filterChapters()" placeholder="Busca por título, resumen o tema..." 
+                           class="w-full pl-12 pr-4 py-3 rounded-full border border-[#E8E0DF] focus:outline-none focus:border-[#A62E1B] focus:ring-2 focus:ring-[#A62E1B]/10 text-sm transition-all">
+                </div>
+
+                <!-- Filtros por Tema y Estado -->
+                <div class="flex flex-wrap gap-2 w-full md:w-auto justify-start md:justify-end">
+                    <button onclick="setFilter('all', this)" class="filter-btn active px-4 py-2 rounded-full text-xs font-semibold border border-[#E8E0DF] bg-[#A62E1B] text-white transition-all shadow-sm">Todos</button>
+                    <button onclick="setFilter('favorites', this)" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-[#E8E0DF] bg-white text-[#6B615F] hover:border-[#A62E1B] hover:text-[#A62E1B] transition-all">Favoritos ❤️</button>
+                    <button onclick="setFilter('read', this)" class="filter-btn px-4 py-2 rounded-full text-xs font-semibold border border-[#E8E0DF] bg-white text-[#6B615F] hover:border-[#A62E1B] hover:text-[#A62E1B] transition-all">Leídos ✔️</button>
+                </div>
+            </div>
+
+            <!-- Grid de Capítulos -->
+            <div id="chaptersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Inyectado dinámicamente con JavaScript -->
+            </div>
+        </main>
+    </div>
+
+    <!-- VISTA 2: LECTOR DINÁMICO DE CAPÍTULO (SPA) -->
+    <div id="reader-view" class="hidden view-transition opacity-0 transform translate-y-4">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+            <!-- Barra de navegación superior en lector -->
+            <div class="flex justify-between items-center mb-8">
+                <button onclick="goHome()" class="group inline-flex items-center gap-2 text-[#A62E1B] font-semibold hover:text-[#822213] transition-colors text-sm sm:text-base">
+                    <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    Volver al índice
+                </button>
+                <div class="flex gap-3">
+                    <button id="readerFavBtn" onclick="toggleCurrentFavorite()" class="w-10 h-10 rounded-full border border-[#E8E0DF] bg-white flex items-center justify-center text-lg hover:border-[#A62E1B] transition-all shadow-sm" title="Marcar como favorito">❤️</button>
+                    <button id="readerReadBtn" onclick="toggleCurrentRead()" class="w-10 h-10 rounded-full border border-[#E8E0DF] bg-white flex items-center justify-center text-lg hover:border-[#A62E1B] transition-all shadow-sm" title="Marcar como leído">✔️</button>
+                </div>
+            </div>
+
+            <!-- Tarjeta Lectora -->
+            <article class="bg-white rounded-3xl border border-[#E8E0DF] shadow-xl p-6 sm:p-12 mb-10">
+                <div id="readerContent">
+                    <!-- Contenido inyectado dinámicamente -->
+                </div>
+            </article>
+
+            <!-- Botones de Navegación Inferior -->
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-[#E8E0DF] pt-8">
+                <button id="prevBtn" onclick="navigateChapter(-1)" class="w-full sm:w-auto px-6 py-3 rounded-full border border-[#E8E0DF] bg-white font-semibold text-sm hover:bg-[#A62E1B] hover:text-white hover:border-[#A62E1B] transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+                    ← Capítulo Anterior
+                </button>
+                <button onclick="goHome()" class="px-6 py-3 rounded-full border border-[#E8E0DF] bg-white font-semibold text-sm hover:bg-[#2D2726] hover:text-white transition-all">
+                    Volver al índice
+                </button>
+                <button id="nextBtn" onclick="navigateChapter(1)" class="w-full sm:w-auto px-6 py-3 rounded-full border border-[#E8E0DF] bg-white font-semibold text-sm hover:bg-[#A62E1B] hover:text-white hover:border-[#A62E1B] transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+                    Siguiente Capítulo →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-[#2D2726] text-[#CCABA5] py-12 px-6 text-center mt-20">
+        <div class="max-w-4xl mx-auto">
+            <h3 class="font-serif text-2xl font-bold text-white mb-3">El Poder de la Esposa que Ora</h3>
+            <p class="text-sm opacity-90 mb-6">Inspirado en la obra clásica de Stormie Omartian. Diseñado con propósito y elegancia para estudio personal y Samsung Notes.</p>
+            <p class="text-xs text-[#CCABA5]/70">© 2026 — Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Script de Datos y Lógica de la Aplicación -->
+    <script>
+        // Base de datos completa con los 30 capítulos del libro y resúmenes fieles
+        const chaptersData = [
+            {
+                id: 1, title: "Su esposa", category: "Crecimiento personal",
+                snippet: "La transformación matrimonial comienza por limpiar el propio corazón de resentimiento, enojo o falta de perdón.",
+                summary: "La autora relata su propia transición de exigir cambios ('Cámbialo, Señor') a pedir transformación propia ('Cámbiame, Señor'). Se destaca el poder del silencio prudente ('cállate y ora') y la creación de un hogar que funcione como un refugio de paz.",
+                idea: "Nuestra propia transformación y pureza de corazón son las herramientas más efectivas para transformar a nuestro esposo.",
+                concepts: "Perdón, transformación interior, silencio prudente, refugio de paz.",
+                message: "Rinde tus expectativas humanas y permite que Dios renueve tu actitud para convertirte en el corazón de tu hogar.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80", alt: "Mujer de rodillas sosteniendo un libro abierto junto a una ventana iluminada por luz matutina."
+            },
+            {
+                id: 2, title: "Su trabajo", category: "Familia y Hogar",
+                snippet: "El trabajo de un hombre está estrechamente ligado a su identidad y propósito, oscilando entre la pereza y la adicción laboral.",
+                summary: "Las oraciones de la esposa pueden abrir puertas de oportunidad, alinear la labor del esposo con el propósito divino y concederle equilibrio entre el éxito y el descanso necesario para evitar el agotamiento.",
+                idea: "El trabajo es un don de Dios; orar por él encamina al esposo hacia el propósito y aleja el temor al fracaso.",
+                concepts: "Propósito laboral, equilibrio, identidad, provisión.",
+                message: "Intercede por la labor diaria de tu esposo para que experimente satisfacción y favor en su entorno profesional.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80", alt: "Hombre trabajando concentrado en un escritorio ordenado bajo luz de lámpara."
+            },
+            {
+                id: 3, title: "Sus finanzas", category: "Familia y Hogar",
+                snippet: "La administración financiera requiere poner los recursos bajo la cobertura de Dios y practicar la generosidad.",
+                summary: "Las presiones económicas ponen a prueba los cimientos del matrimonio. Practicar la generosidad (diezmos y ayuda al necesitado) disipa la ansiedad y abre las compuertas de la provisión divina.",
+                idea: "Poner las finanzas bajo la cobertura de Dios libera al matrimonio de la opresión de las deudas y la escasez.",
+                concepts: "Mayordomía, generosidad, confianza en el proveedor, diezmos.",
+                message: "Confía en Dios como la fuente de provisión y busquen acuerdos mutuos en la administración del hogar.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80", alt: "Manos unidas sobre una mesa con libreta de cuentas y calculadora bajo luz cálida."
+            },
+            {
+                id: 4, title: "Su sexualidad", category: "Relación de pareja",
+                snippet: "La intimidad física es un pilar fundamental que no debe descuidarse ni utilizarse como manipulación.",
+                summary: "El cuidado mutuo en la intimidad previene la vulnerabilidad ante la tentación y fortalece el vínculo conyugal, recordando que en el matrimonio los cuerpos se pertenecen mutuamente.",
+                idea: "Mantener activa y prioritaria la intimidad sexual protege al matrimonio de la apatía y la tentación exterior.",
+                concepts: "Intimidad, pureza conyugal, afecto mutuo, entrega.",
+                message: "Valora la intimidad como un regalo divino para conectar y completar a tu esposo.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=800&q=80", alt: "Ambiente íntimo y acogedor iluminado por velas tenues."
+            },
+            {
+                id: 5, title: "Su cariño", category: "Relación de pareja",
+                snippet: "La falta de demostraciones de cariño puede enfriar un matrimonio. La oración cultiva la ternura cotidiana.",
+                summary: "A través del testimonio de Tomás y Patricia, se aborda cómo superar la rigidez afectiva heredada de la infancia mediante la oración constante y el apoyo mutuo en comunidad.",
+                idea: "El afecto físico y las expresiones de ternura son tan vitales como el soporte material en la relación.",
+                concepts: "Demostración de afecto, ternura, superación de barreras infantiles.",
+                message: "No te resignes a un matrimonio sin cariño; intercede por la transformación y expresa afecto genuino.",
+                spoiler: true, image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=800&q=80", alt: "Pareja madura abrazándose cálidamente en un parque al atardecer."
+            },
+            {
+                id: 6, title: "Sus tentaciones", category: "Batallas espirituales",
+                snippet: "El enemigo explota las vulnerabilidades humanas. La oración fortalece la resolución del esposo.",
+                summary: "La tentación es una realidad constante. La intercesión constante fortalece la resolución del esposo, disminuye las voces de seducción y establece una cerca de protección espiritual.",
+                idea: "La oración anticipada levanta defensas espirituales frente a las seducciones del entorno.",
+                concepts: "Protección espiritual, resistencia, pureza, discernimiento.",
+                message: "Vigila y ora para que tu esposo resista cualquier seducción que busque fracturar su integridad.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=800&q=80", alt: "Sendero dividido con una luz brillante que marca el camino correcto."
+            },
+            {
+                id: 7, title: "Su mente", category: "Batallas espirituales",
+                snippet: "La mente masculina es blanco de desaliento y pensamientos de fracaso. La Palabra y la alabanza son las armas.",
+                summary: "Los ataques mentales de inutilidad o desesperanza pueden paralizar al hombre. Mediante la Palabra de Dios y la alabanza, se derriban fortalezas mentales para adoptar la mente de Cristo.",
+                idea: "Reclamar una mente sana en Cristo neutraliza las mentiras y el desánimo.",
+                concepts: "Mente de Cristo, alabanza, derribar argumentos, claridad mental.",
+                message: "Intercede para que tu esposo discierna la voz de Dios por encima de cualquier pensamiento de derrota.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80", alt: "Silueta de un hombre de perfil con halo de luz suave sobre su frente."
+            },
+            {
+                id: 8, title: "Sus temores", category: "Batallas espirituales",
+                snippet: "Los temores invisibles pueden dominar a un hombre. El temor del Señor disipa todo espanto.",
+                summary: "El miedo al fracaso, a la enfermedad o a no poder proteger a su familia atormenta en silencio. Al sustituir el temor terrenal por el temor reverente del Señor, el esposo halla consuelo y seguridad.",
+                idea: "El amor perfecto de Dios y el temor reverente echan fuera todo tormento y ansiedad.",
+                concepts: "Temor del Señor, amor perfecto, refugio, seguridad.",
+                message: "Cubre los temores nocturnos y diurnos de tu esposo con la paz y protección del Padre celestial.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80", alt: "Hombre contemplando el horizonte desde una cima montañosa firme."
+            },
+            {
+                id: 9, title: "Su propósito", category: "Crecimiento personal",
+                snippet: "Todo hombre fue creado con un diseño único. Descubrir su propósito trae satisfacción profunda.",
+                summary: "Cuando un esposo camina en su llamado divino, proyecta confianza y seguridad. La esposa apoya e intercede para que no se desvíe ni sucumba ante el desaliento.",
+                idea: "La intercesión alinea los pasos del esposo con el propósito eterno para el cual fue creado.",
+                concepts: "Llamado divino, destino, satisfacción interior, apoyo conyugal.",
+                message: "Ora para que tu esposo descubra y ejecute con pasión la misión que Dios le ha encomendado.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80", alt: "Brújula antigua sobre un mapa de rutas iluminada por un rayo de sol."
+            },
+            {
+                id: 10, title: "Sus decisiones", category: "Crecimiento personal",
+                snippet: "La sabiduría trae éxito. El discernimiento divino evita errores y contratos desacertados.",
+                summary: "Los hombres suelen confiar en su propio criterio. La oración de intercesión actúa como un filtro que otorga discernimiento, destraba la necedad y guía hacia decisiones sabias.",
+                idea: "La sabiduría divina es superior a la opinión propia y previene pérdidas innecesarias.",
+                concepts: "Discernimiento, sabiduría, consejo santo, previsión.",
+                message: "Pide sabiduría para tu esposo en cada encrucijada y decisión importante que deba tomar.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=800&q=80", alt: "Balanza equilibrada y elegante sobre una superficie de madera noble."
+            },
+            {
+                id: 11, title: "Su salud", category: "Familia y Hogar",
+                snippet: "Cuidar el cuerpo como templo es indispensable. Dios es el Señor que sana.",
+                summary: "La salud física requiere atención y hábitos saludables. La oración acompaña el autocuidado y confía los momentos de enfermedad y pruebas médicas al Dios sanador.",
+                idea: "La fe y el autocuidado corporal aseguran vitalidad y bienestar a lo largo de los años.",
+                concepts: "Sanidad divina, templo del Espíritu Santo, vitalidad, autocuidado.",
+                message: "Intercede por la fortaleza física y la longevidad saludable de tu esposo.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80", alt: "Vaso con agua fresca y una manzana junto a ropa deportiva."
+            },
+            {
+                id: 12, title: "Su protección", category: "Batallas espirituales",
+                snippet: "Los peligros cotidianos acechan. La oración moviliza la guardia angélica.",
+                summary: "Los accidentes y asechanzas imprevistas pueden ocurrir en cualquier momento. La intercesión diaria invoca la promesa de protección angélica sobre caminos, viajes y lugares de trabajo.",
+                idea: "La cobertura de Dios resguarda al esposo frente a los peligros ocultos del día a día.",
+                concepts: "Protección angélica, refugio, cuidado en caminos, salvaguarda.",
+                message: "Encomienda las salidas y entradas de tu esposo bajo la sombra de las alas del Todopoderoso.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=800&q=80", alt: "Escudo protector estilizado bajo una suave lluvia iluminada."
+            },
+            {
+                id: 13, title: "Sus pruebas", category: "Crecimiento personal",
+                snippet: "Las pruebas refinan la fe y producen constancia. La actitud correcta marca la victoria.",
+                summary: "Las dificultades purifican el carácter. Mantener una actitud de gratitud y alabanza en medio del fuego transforma la prueba en un testimonio de fortaleza espiritual.",
+                idea: "Las pruebas superadas con fe profundizan el andar con Dios y fortalecen el matrimonio.",
+                concepts: "Refinamiento, perseverancia, fe probada, victoria.",
+                message: "Apoya a tu esposo en sus momentos difíciles sin cargar su cruz, confiando en el propósito divino.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80", alt: "Metales preciosos siendo purificados en un crisol con destellos brillantes."
+            },
+            {
+                id: 14, title: "Su integridad", category: "Crecimiento personal",
+                snippet: "La integridad es actuar rectamente cuando nadie mira. Es el estándar inquebrantable del honor.",
+                summary: "Un hombre íntegro cumple su palabra aunque salga perjudicado. La oración fortalece su resolución para mantenerse firme frente a la presión y la tentación de corromper sus valores.",
+                idea: "La honestidad y el honor guían los pasos del justo hacia la presencia de Dios.",
+                concepts: "Honor, honestidad, palabra firme, valores morales.",
+                message: "Pide que la rectitud y la verdad sean el sello distintivo en todas las acciones de tu esposo.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80", alt: "Pilar de piedra clásico y firme sosteniendo una estructura arquitectónica."
+            },
+            {
+                id: 15, title: "Su reputación", category: "Familia y Hogar",
+                snippet: "Una buena reputación es frágil ante malentendidos y chismes. La intercesión defiende su buen nombre.",
+                summary: "Estar en el lugar equivocado o ser mal citado puede dañar una trayectoria. La oración protege su reputación pública y asegura que los frutos de su bondad prevalezcan.",
+                idea: "Dios defiende el buen nombre de quienes confían en Él y caminan en integridad.",
+                concepts: "Buena fama, defensa pública, protección de calumnias, honor.",
+                message: "Cubre la reputación y el entorno profesional de tu esposo frente a cualquier juicio injusto.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80", alt: "Sello o emblema clásico sobre papel pergamino limpio."
+            },
+            {
+                id: 16, title: "Sus prioridades", category: "Relación de pareja",
+                snippet: "El orden correcto de prioridades asegura paz y equilibrio frente a las distracciones del éxito.",
+                summary: "Poner a Dios primero, al cónyuge en segundo lugar y a los hijos o trabajo después requiere intencionalidad. La oración alinea el corazón del esposo para valorar lo verdaderamente importante.",
+                idea: "Mantener las prioridades en orden previene el colapso familiar y fortalece la unidad.",
+                concepts: "Jerarquía de prioridades, enfoque, equilibrio familiar, devoción.",
+                message: "Examina y ordena tus propias prioridades para que tu esposo ocupe el lugar de honor que le corresponde.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=800&q=80", alt: "Bloques de madera apilados en perfecta armonía y equilibrio estético."
+            },
+            {
+                id: 17, title: "Sus relaciones", category: "Familia y Hogar",
+                snippet: "El aislamiento no es saludable. Las amistades piadosas refinan y fortalecen el ánimo.",
+                summary: "Tener amigos íntegros y parejas de apoyo edifica el matrimonio. La oración atrae influencias sanas y disuelve el resentimiento o la falta de perdón hacia familiares y vecinos.",
+                idea: "Las buenas compañías edifican y afinan el carácter del hombre como el hierro al hierro.",
+                concepts: "Amistades piadosas, reconciliación, comunidad, influencia sana.",
+                message: "Intercede para que tu esposo esté rodeado de hombres sabios y cultive relaciones pacíficas.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80", alt: "Grupo de personas compartiendo una cena alrededor de una mesa iluminada."
+            },
+            {
+                id: 18, title: "Su paternidad", category: "Familia y Hogar",
+                snippet: "El temor a no ser un buen padre agobia a los hombres. La oración restaura la confianza paternal.",
+                summary: "Muchos hombres cargan con la inseguridad de no saber criar a sus hijos o comunicarse con ellos. La oración otorga paciencia, sabiduría disciplinaria y la capacidad de reflejar el amor del Padre celestial.",
+                idea: "Imitar el corazón del Padre celestial transforma al esposo en un pilar de amor y guía para sus hijos.",
+                concepts: "Paternidad, disciplina con amor, comunicación familiar, herencia espiritual.",
+                message: "Ora para que tu esposo disfrute plenamente de su rol como padre y guíe a sus hijos con gracia.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?auto=format&fit=crop&w=800&q=80", alt: "Padre enseñando a su hijo a plantar un pequeño brote de planta en la tierra."
+            },
+            {
+                id: 19, title: "Su pasado", category: "Crecimiento personal",
+                snippet: "Los traumas infantiles o etiquetas del pasado no deben condicionar el presente. Dios hace todo nuevo.",
+                summary: "Vivir anclado en errores o heridas del pasado impide avanzar hacia el futuro. La intercesión rompe cadenas generacionales y renueva la mente para abrazar la libertad en Cristo.",
+                idea: "Dejar atrás lo viejo permite redimir la historia personal y legar libertad a los hijos.",
+                concepts: "Redención del pasado, ruptura de cadenas, renovación, perdón.",
+                message: "Pide que las heridas y recuerdos dolorosos del pasado sean sanados por completo.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=800&q=80", alt: "Camino que emerge desde la bruma oscura hacia un horizonte totalmente despejado."
+            },
+            {
+                id: 20, title: "Su actitud", category: "Crecimiento personal",
+                snippet: "Las actitudes negativas y la queja constante envenenan el hogar. El gozo es una elección.",
+                summary: "Permitir que el enojo o la amargura dominen la respuesta cotidiana destruye la paz familiar. La oración infunde un espíritu de gozo, serenidad y contentamiento en cualquier circunstancia.",
+                idea: "Un corazón contento irradia alegría y transforma la atmósfera de convivencia diaria.",
+                concepts: "Actitud positiva, gozo, contentamiento, serenidad.",
+                message: "Intercede para que tu esposo sea librado de la actitud refunfuñona y refleje paz interior.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", alt: "Ventana abierta que deja entrar una brisa suave y cortinas blancas con luz matutina."
+            },
+            {
+                id: 21, title: "Su matrimonio", category: "Relación de pareja",
+                snippet: "El compromiso matrimonial permanente requiere unidad y protección frente al divorcio.",
+                summary: "Las expectativas irreales y las presiones culturales amenazan la unión. Orar por el matrimonio fortalece el pacto de fidelidad, alejando todo pensamiento de separación y cultivando complicidad.",
+                idea: "Un matrimonio unido en oración y compromiso mutuo es inquebrantable ante las tormentas.",
+                concepts: "Pacto matrimonial, fidelidad, unidad, prevención de divorcio.",
+                message: "Protege tu matrimonio en oración para que sea un santuario de amor y refugio permanente.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=800&q=80", alt: "Dos alianzas entrelazadas sobre una superficie de madera rústica."
+            },
+            {
+                id: 22, title: "Sus emociones", category: "Crecimiento personal",
+                snippet: "Emociones turbulentas como la ira o la depresión pueden maniatar la vida de un hombre.",
+                summary: "La depresión crónica o los arrebatos de ira controlan a la familia si no se tratan. La intercesión rompe ciclos emocionales oscuros y unge el espíritu con paz y estabilidad.",
+                idea: "La oración libera el alma de las prisiones emocionales y restaura el equilibrio interior.",
+                concepts: "Estabilidad emocional, superación de depresión, dominio propio.",
+                message: "Clama por liberación cuando veas a tu esposo atrapado por emociones negativas agobiantes.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1505144808419-1957a94ca61e?auto=format&fit=crop&w=800&q=80", alt: "Mar en calma reflejando un cielo despejado después de una tormenta."
+            },
+            {
+                id: 23, title: "Su camino", category: "Crecimiento personal",
+                snippet: "El rumbo diario determina el destino. Caminar en santidad y obediencia asegura el éxito.",
+                summary: "Cada día se elige un camino. Mantenerse en la calzada de santidad guiados por el Espíritu asegura que, aun ante tropiezos accidentales, el esposo no caiga en destrucción definitiva.",
+                idea: "Caminar cogidos de la mano de Dios asegura una trayectoria luminosa y con propósito.",
+                concepts: "Camino de santidad, dirección divina, obediencia, pasos firmes.",
+                message: "Pide que los pasos de tu esposo sean dirigidos e iluminados por la verdad en todo momento.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80", alt: "Sendero limpio y angosto bordeado de árboles verdes bajo cielo luminoso."
+            },
+            {
+                id: 24, title: "Su hablar", category: "Familia y Hogar",
+                snippet: "Las palabras tienen poder de vida y muerte. Refrenar la boca edifica y trae paz.",
+                summary: "Las quejas, insultos o palabras desmedidas destruyen el alma. La disciplina en el hablar fomenta la edificación mutua y asegura que la conversación refleje un corazón transformado.",
+                idea: "Una lengua refrenada y bondadosa es fuente de bendición y larga vida pacífica.",
+                concepts: "Poder de las palabras, edificación, dominio de la lengua, bondad.",
+                message: "Intercede para que la boca de tu esposo pronuncie únicamente palabras que den vida y aliento.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=800&q=80", alt: "Pluma estilográfica clásica sobre papel con trazos limpios y armónicos."
+            },
+            {
+                id: 25, title: "Su arrepentimiento", category: "Crecimiento personal",
+                snippet: "El orgullo bloquea la confesión. El verdadero arrepentimiento transforma la conducta.",
+                summary: "La incapacidad de admitir errores debido al orgullo pudre el alma. El arrepentimiento genuino duele al principio, pero produce limpieza profunda y un cambio radical de dirección.",
+                idea: "La humildad precede al honor y abre el camino para el perdón y la restauración.",
+                concepts: "Arrepentimiento genuino, confesión, humildad, limpieza interior.",
+                message: "Ora para que el Espíritu Santo convenza con gracia a tu esposo y le conceda un corazón arrepentido.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80", alt: "Manos abiertas en actitud de entrega y honestidad bajo un haz de luz."
+            },
+            {
+                id: 26, title: "Su liberación", category: "Batallas espirituales",
+                snippet: "Las ataduras a vicios y conductas destructivas se rompen mediante el poder del Libertador.",
+                summary: "Nadie está exento de necesitar liberación de ataduras profundas. Clamar al Señor y revestirse con la armadura espiritual garantiza la victoria frente a las cadenas del mal.",
+                idea: "Cristo libertó para vivir en libertad; la oración mantiene firmes las murallas de protección.",
+                concepts: "Liberación, armadura espiritual, victoria sobre vicios, redención.",
+                message: "Invoca al Libertador para romper cualquier yugo o hábito esclavizante en la vida de tu esposo.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80", alt: "Cadenas abriéndose y liberando espacio luminoso."
+            },
+            {
+                id: 27, title: "Su obediencia", category: "Crecimiento personal",
+                snippet: "Edificar sobre la roca requiere escuchar y obedecer las instrucciones específicas de Dios.",
+                summary: "La obediencia a los mandamientos y directrices divinas trae paz, estabilidad y bendición inquebrantable frente a las tormentas que azotan el hogar.",
+                idea: "La obediencia activa ancla la familia en terreno seguro y fructífero.",
+                concepts: "Obediencia, casa sobre la roca, disciplina espiritual, fidelidad.",
+                message: "Pide que tu esposo mantenga un oído atento y dispuesto a cumplir la voluntad de Dios.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80", alt: "Casa sólida construida sobre una base de roca firme frente a un paisaje sereno."
+            },
+            {
+                id: 28, title: "El concepto que tiene de sí mismo", category: "Crecimiento personal",
+                snippet: "La inseguridad cierra puertas. Encontrar la verdadera identidad en Dios otorga confianza.",
+                summary: "Un concepto pobre de sí mismo genera rechazo e inseguridad constante. Al verse a través de los ojos de Dios como un hijo amado, el esposo recupera la confianza y atrae oportunidades de éxito.",
+                idea: "La verdadera autoimagen se descubre al reflejar la imagen de Cristo en el alma.",
+                concepts: "Autoimagen, identidad en Cristo, valor personal, seguridad.",
+                message: "Intercede para que tu esposo disipe sus complejos y reconozca su valor incalculable en Dios.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80", alt: "Reflejo claro y luminoso en un espejo antiguo mostrando autoconfianza y dignidad."
+            },
+            {
+                id: 29, title: "Su fe", category: "Batallas espirituales",
+                snippet: "Vivir por fe en las promesas divinas disipa la duda y activa los recursos celestiales.",
+                summary: "La fe es el motor indispensable para superar obstáculos. Alimentar el alma con la Palabra incrementa la capacidad de creer que para Dios nada hay imposible.",
+                idea: "Una fe firme y sin dudas traslada montañas y asegura paz en medio de la prueba.",
+                concepts: "Fe inquebrantable, confianza, superación de dudas, poder divino.",
+                message: "Pide que la medida de fe de tu esposo crezca y se fortalezca cada día en la presencia de Dios.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=800&q=80", alt: "Planta diminuta brotando con fuerza entre las grietas de una roca seca."
+            },
+            {
+                id: 30, title: "Su futuro", category: "Crecimiento personal",
+                snippet: "Una visión clara del futuro de bienestar y esperanza ancla el alma y da propósito.",
+                summary: "Perder la visión del futuro debilita el ánimo. Confiando en que los planes de Dios son de bien y no de calamidad, el esposo recupera la esperanza y camina hacia un destino prometedor.",
+                idea: "Invertir en el propósito eterno asegura una vida con sentido y un final lleno de paz.",
+                concepts: "Visión de futuro, esperanza, planes de bienestar, eternidad.",
+                message: "Ora para que tu esposo mantenga siempre viva la esperanza y la visión brillante que Dios preparó para él.",
+                spoiler: false, image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80", alt: "Horizonte amplio al amanecer con colores pasteles y terracota."
+            }
+        ];
+
+        let currentFilter = 'all';
+        let currentSearchQuery = '';
+        let currentChapterId = 1;
+
+        // Estado guardado en localStorage para favoritos y leídos
+        let userState = JSON.parse(localStorage.getItem('prayerWifeState')) || {
+            favorites: [],
+            read: []
+        };
+
+        function saveState() {
+            localStorage.setItem('prayerWifeState', JSON.stringify(userState));
+        }
+
+        // Renderizar Grid de Capítulos
+        function renderChapters() {
+            const grid = document.getElementById('chaptersGrid');
+            grid.innerHTML = '';
+
+            const filtered = chaptersData.filter(ch => {
+                const matchesSearch = ch.title.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                                      ch.summary.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                                      ch.category.toLowerCase().includes(currentSearchQuery.toLowerCase());
+                
+                if (currentFilter === 'favorites') return matchesSearch && userState.favorites.includes(ch.id);
+                if (currentFilter === 'read') return matchesSearch && userState.read.includes(ch.id);
+                return matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-16 text-[#6B615F]">No se encontraron capítulos con los criterios de búsqueda o filtros seleccionados.</div>`;
+                return;
+            }
+
+            filtered.forEach(ch => {
+                const isFav = userState.favorites.includes(ch.id);
+                const isRead = userState.read.includes(ch.id);
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl border border-[#E8E0DF] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer group transform hover:-translate-y-1';
+                card.onclick = (e) => {
+                    if(e.target.closest('button')) return;
+                    openReader(ch.id);
+                };
+
+                card.innerHTML = `
+                    <div class="relative h-48 bg-gradient-to-r from-[#CCABA5] to-[#E8E0DF] overflow-hidden">
+                        <img src="${ch.image}" alt="${ch.alt}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <span class="absolute top-3 left-3 bg-[#2D2726]/85 backdrop-blur-md text-white text-xs font-semibold px-3 py-1 rounded-full">
+                            Capítulo ${ch.id}
+                        </span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-[#A62E1B] uppercase tracking-wider mb-1 block">${ch.category}</span>
+                            <h3 class="font-serif text-xl font-bold text-[#2D2726] mb-2 group-hover:text-[#A62E1B] transition-colors">${ch.title}</h3>
+                            <p class="text-sm text-[#6B615F] line-clamp-3 leading-relaxed mb-4">${ch.snippet}</p>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 border-t border-[#E8E0DF]">
+                            <span class="text-xs text-[#6B615F] font-medium">Lectura guiada</span>
+                            <div class="flex gap-2">
+                                <button onclick="toggleFavorite(${ch.id}, event)" class="w-9 h-9 rounded-full border border-[#E8E0DF] flex items-center justify-center text-sm transition-all ${isFav ? 'bg-[#A62E1B] text-white border-[#A62E1B]' : 'bg-white text-[#6B615F] hover:border-[#A62E1B]'}" title="Favorito">❤️</button>
+                                <button onclick="toggleRead(${ch.id}, event)" class="w-9 h-9 rounded-full border border-[#E8E0DF] flex items-center justify-center text-sm transition-all ${isRead ? 'bg-[#A62E1B] text-white border-[#A62E1B]' : 'bg-white text-[#6B615F] hover:border-[#A62E1B]'}" title="Marcar como leído">✔️</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Filtros y Búsqueda
+        function setFilter(filter, btn) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-[#A62E1B]', 'text-white');
+                b.classList.add('bg-white', 'text-[#6B615F]');
+            });
+            btn.classList.remove('bg-white', 'text-[#6B615F]');
+            btn.classList.add('bg-[#A62E1B]', 'text-white');
+            renderChapters();
+        }
+
+        function filterChapters() {
+            currentSearchQuery = document.getElementById('searchInput').value;
+            renderChapters();
+        }
+
+        // Acciones de Favoritos y Leídos
+        function toggleFavorite(id, event) {
+            event.stopPropagation();
+            const idx = userState.favorites.indexOf(id);
+            if(idx > -1) userState.favorites.splice(idx, 1);
+            else userState.favorites.push(id);
+            saveState();
+            renderChapters();
+            if(document.getElementById('reader-view').classList.contains('block')) updateReaderButtons();
+        }
+
+        function toggleRead(id, event) {
+            event.stopPropagation();
+            const idx = userState.read.indexOf(id);
+            if(idx > -1) userState.read.splice(idx, 1);
+            else userState.read.push(id);
+            saveState();
+            renderChapters();
+            if(document.getElementById('reader-view').classList.contains('block')) updateReaderButtons();
+        }
+
+        function toggleCurrentFavorite() { toggleFavorite(currentChapterId, { stopPropagation: () => {} }); }
+        function toggleCurrentRead() { toggleRead(currentChapterId, { stopPropagation: () => {} }); }
+
+        // Navegación SPA
+        function openReader(id) {
+            currentChapterId = id;
+            renderReaderContent();
+            
+            const home = document.getElementById('home-view');
+            const reader = document.getElementById('reader-view');
+            
+            home.classList.remove('opacity-100', 'translate-y-0');
+            home.classList.add('opacity-0', '-translate-y-4', 'hidden');
+            
+            reader.classList.remove('hidden');
+            setTimeout(() => {
+                reader.classList.remove('opacity-0', 'translate-y-4');
+                reader.classList.add('opacity-100', 'translate-y-0');
+            }, 10);
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            const home = document.getElementById('home-view');
+            const reader = document.getElementById('reader-view');
+            
+            reader.classList.remove('opacity-100', 'translate-y-0');
+            reader.classList.add('opacity-0', 'translate-y-4');
+            
+            setTimeout(() => {
+                reader.classList.add('hidden');
+                home.classList.remove('hidden');
+                setTimeout(() => {
+                    home.classList.remove('opacity-0', '-translate-y-4');
+                    home.classList.add('opacity-100', 'translate-y-0');
+                }, 10);
+            }, 300);
+
+            renderChapters();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function scrollToChapters() {
+            document.getElementById('chapters-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Renderizado del Lector
+        function renderReaderContent() {
+            const ch = chaptersData.find(c => c.id === currentChapterId);
+            const container = document.getElementById('readerContent');
+
+            let spoilerBanner = '';
+            if(ch.spoiler) {
+                spoilerBanner = `
+                    <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl mb-8 flex items-center gap-3 text-sm">
+                        <svg class="w-6 h-6 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        <span><strong>Aviso de spoiler:</strong> Este capítulo contiene testimonios profundos y relatos personales detallados de transformación conyugal.</span>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="text-center mb-10">
+                    <span class="text-xs font-bold uppercase tracking-widest text-[#A62E1B] mb-2 block">Capítulo ${ch.id} • ${ch.category}</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#2D2726]">${ch.title}</h2>
+                </div>
+
+                <div class="h-72 sm:h-96 rounded-2xl overflow-hidden mb-10 shadow-md">
+                    <img src="${ch.image}" alt="${ch.alt}" class="w-full h-full object-cover">
+                </div>
+
+                ${spoilerBanner}
+
+                <div class="space-y-8">
+                    <section>
+                        <h3 class="font-serif text-xl font-bold text-[#A62E1B] mb-3 flex items-center gap-2">📖 Resumen Claro</h3>
+                        <p class="text-[#6B615F] text-base sm:text-lg leading-relaxed">${ch.summary}</p>
+                    </section>
+
+                    <section class="bg-[#FDFBFB] p-6 rounded-2xl border border-[#E8E0DF]">
+                        <h3 class="font-serif text-xl font-bold text-[#A62E1B] mb-2 flex items-center gap-2">💡 Idea Principal</h3>
+                        <p class="text-[#2D2726] font-medium text-base">${ch.idea}</p>
+                    </section>
+
+                    <section>
+                        <h3 class="font-serif text-xl font-bold text-[#A62E1B] mb-2 flex items-center gap-2">🔑 Conceptos Clave</h3>
+                        <p class="text-[#6B615F] text-base">${ch.concepts}</p>
+                    </section>
+
+                    <section class="border-t border-[#E8E0DF] pt-6">
+                        <h3 class="font-serif text-xl font-bold text-[#A62E1B] mb-2 flex items-center gap-2">✨ Mensaje del Capítulo</h3>
+                        <p class="text-[#2D2726] italic text-base leading-relaxed">"${ch.message}"</p>
+                    </section>
+                </div>
+            `;
+
+            updateReaderButtons();
+            document.getElementById('prevBtn').disabled = currentChapterId === 1;
+            document.getElementById('nextBtn').disabled = currentChapterId === chaptersData.length;
+        }
+
+        function updateReaderButtons() {
+            const isFav = userState.favorites.includes(currentChapterId);
+            const isRead = userState.read.includes(currentChapterId);
+            
+            const favBtn = document.getElementById('readerFavBtn');
+            const readBtn = document.getElementById('readerReadBtn');
+
+            if(isFav) {
+                favBtn.className = "w-10 h-10 rounded-full border border-[#A62E1B] bg-[#A62E1B] text-white flex items-center justify-center text-lg transition-all shadow-sm";
+            } else {
+                favBtn.className = "w-10 h-10 rounded-full border border-[#E8E0DF] bg-white flex items-center justify-center text-lg hover:border-[#A62E1B] transition-all shadow-sm";
+            }
+
+            if(isRead) {
+                readBtn.className = "w-10 h-10 rounded-full border border-[#A62E1B] bg-[#A62E1B] text-white flex items-center justify-center text-lg transition-all shadow-sm";
+            } else {
+                readBtn.className = "w-10 h-10 rounded-full border border-[#E8E0DF] bg-white flex items-center justify-center text-lg hover:border-[#A62E1B] transition-all shadow-sm";
+            }
+        }
+
+        function navigateChapter(dir) {
+            const nextId = currentChapterId + dir;
+            if(nextId >= 1 && nextId <= chaptersData.length) {
+                openReader(nextId);
+            }
+        }
+
+        // Inicialización
+        window.onload = () => {
+            renderChapters();
+        };
+    </script>
+</body>
+</html>
